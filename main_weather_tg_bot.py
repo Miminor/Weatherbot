@@ -1,5 +1,7 @@
 from config import tg_bot_token
 from config import open_weather_token
+import schedule
+import time
 
 import requests
 from datetime import datetime
@@ -37,6 +39,13 @@ async def start_command(message: types.Message):
     await message.reply("Привет! Напиши мне название города и я пришлю тебе сводку погоды!")
     log(message)
 
+@dp.message_handler(commands=["queque"])
+async def job(message: types.Message):
+    await message.reply("Введите название города")
+    schedule.every(10).minutes.do(get_weather)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
 @dp.message_handler()
 async def get_weather(message: types.Message):
