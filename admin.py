@@ -5,8 +5,8 @@ bot = Bot(token=tg_bot_token)
 dp = Dispatcher(bot)
 
 async def send():
-    usr_id = int(input("Введите id получателя: "))
-    test = input("Введите ваше сообщение: ")
+    usr_id = int(input("Введіть id отримувача: "))
+    test = input("Введіть ваше повідомлення: ")
     await bot.send_message(usr_id, test)
 
 
