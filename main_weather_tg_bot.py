@@ -24,7 +24,7 @@ with open("user_database.json", encoding='utf-8') as file:
 def log(message):
     print("<!------!>")
     print(datetime.now())
-    print("Сообщение от {0} {1} id = {2} \n {3}".format(message.from_user.first_name, message.from_user.last_name,
+    print("Повідомлення від {0} {1} id = {2} \n {3}".format(message.from_user.first_name, message.from_user.last_name,
                                                         str(message.from_user.id), message.text))
     user_id = message.from_user.id
 
@@ -45,13 +45,13 @@ async def usr_id(message):
 @dp.message_handler(commands=["help"])
 async def usr_help(message):
     await message.reply(
-        "Просто введите название города на любом языке и бот выдаст сводку погоды на текущий момент \U0001F31D\n"
-        "Также с помощью команды /id вы можете узнать свой id в телеграмме")
+        "Введіть назву міста \U0001F31D\n"
+        "id щоб дізнатись ваш telegram id")
 
 
 @dp.message_handler(commands=["start"])
 async def start_command(message: types.Message):
-    await message.reply("Привет! Напиши мне название города и я пришлю тебе сводку погоды!")
+    await message.reply("Привіт! Введіть назву вашого міста і я відправлю зведення погоди")
 
 
 foo_counter = 0
@@ -70,14 +70,14 @@ async def once_a_day(message: types.Message):
     global foo_counter
     if not arguments:
         if foo_counter % 2 == 0:
-            await message.answer("Для получения ежедневной сводки в это же время дня отправьте команду в формату "
-                                 "/once Киев")
+            await message.answer("Для отримання жоденного зведення погоди введіть назву вашого міста в наступному форматі: "
+                                 "/once Київ")
         elif foo_counter % 2 != 0:
             foo_counter += 1
-            await message.answer("Ежедневная сводка остановлена")
+            await message.answer("Щоденне зведення погоди зупинене")
     elif foo_counter % 2 == 0:
         foo_counter += 1
-        await message.answer("Для отмены введите команду /once еще раз")
+        await message.answer("Для відміни введіть команду /once ще раз")
         while foo_counter % 2 != 0:
             await asyncio.sleep(3600)
             await get_weather(message)
@@ -87,20 +87,20 @@ async def once_a_day(message: types.Message):
 async def get_weather(message: types.Message):
     code_to_smile = {
         "Clear": "Ясно \U00002600",
-        "Clouds": "Облачно \U00002601",
+        "Clouds": "Хмарно \U00002601",
         "Thunderstorm": "Гроза \U000026A1",
-        "Drizzle": "Дождь \U00002614",
-        "Rain": "Дождь \U00002614",
-        "Snow": "Снег \U0001F328",
+        "Drizzle": "Бісячий дощ \U00002614",
+        "Rain": "Дощ \U00002614",
+        "Snow": "Сніг \U0001F328",
         "Mist": "ТУман \U0001F32b"
     }
 
     air_pollution = {
-        1: "Хороший \U0001F7E2",
-        2: "Умеренный \U0001F7E1",
-        3: "Средний \U0001F7E0",
-        4: "Высокий \U0001F534",
-        5: "Очень высокий \U00002620"
+        1: "Гарний \U0001F7E2",
+        2: "Помірний \U0001F7E1",
+        3: "Середній \U0001F7E0",
+        4: "Високий \U0001F534",
+        5: "Дуже високий \U00002620"
     }
 
     arg = message.get_args()
@@ -146,18 +146,18 @@ async def get_weather(message: types.Message):
             wd = "Посмотри в окно"
 
         await message.reply(f"***{datetime.now().strftime('%Y-%m-%d')}***\n"
-                            f"Погода в городе: {city}\nТемпература сейчас: {cur_temp} C° {wd}\n"
-                            f"Скорость ветра: {wind} м/с \U0001F4A8\n"
-                            f"Влажность: {cur_humidity}%\n"
-                            f"Восход солнца: {sunrise_timestamp}\n"
-                            f"Заход солнца: {sunset_timestamp}\n"
-                            f"Продолжительность светового дня: {length_of_the_day} \U0001F55B\n"
-                            f"Уровень загрязнённости воздуха: {air_pollution[pollution_level]}\n"
-                            f"***Хорошего дня!***"
+                            f"Погода в місті: {city}\nТемпература сейчас: {cur_temp} C° {wd}\n"
+                            f"Швидкість вітру: {wind} м/с \U0001F4A8\n"
+                            f"Вологість: {cur_humidity}%\n"
+                            f"Схід сонця: {sunrise_timestamp}\n"
+                            f"Захід сонця: {sunset_timestamp}\n"
+                            f"Довжина світлового дня: {length_of_the_day} \U0001F55B\n"
+                            f"Рівень забруднення повітря: {air_pollution[pollution_level]}\n"
+                            f"***Гарного дня!***"
                             )
 
     except:
-        await message.reply('\U00002620 Проверьте название города')
+        await message.reply('\U00002620 Перевірте назву міста')
 
     log(message)
 
